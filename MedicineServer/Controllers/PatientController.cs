@@ -9,7 +9,7 @@ namespace MedicineServer.Controllers
 	[ApiController]
 	public class PatientController : ControllerBase
 	{
-		private MedicineContext _db;
+		private readonly MedicineContext _db;
 
 		public PatientController(MedicineContext context)
 		{

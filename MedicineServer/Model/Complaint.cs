@@ -4,6 +4,6 @@
 	{
 		public int Id { get; set; }
 		public string Content { get; set; }
-		public Problem Problem { get; set; }
+		public Examination Examination { get; set; }
 	}
 }

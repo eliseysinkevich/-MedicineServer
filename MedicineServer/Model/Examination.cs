@@ -2,7 +2,7 @@
 
 namespace MedicineServer.Model
 {
-	public class Problem
+	public class Examination
 	{
 		public int Id { get; set; }
 		public string Content { get; set; }

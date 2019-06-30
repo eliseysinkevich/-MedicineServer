@@ -4,14 +4,16 @@ using MedicineServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MedicineServer.Migrations
 {
     [DbContext(typeof(MedicineContext))]
-    partial class MedicineContextModelSnapshot : ModelSnapshot
+    [Migration("20190629122233_Parameter")]
+    partial class Parameter
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,11 +29,11 @@ namespace MedicineServer.Migrations
 
                     b.Property<string>("Content");
 
-                    b.Property<int?>("ExaminationId");
+                    b.Property<int?>("ProblemId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExaminationId");
+                    b.HasIndex("ProblemId");
 
                     b.ToTable("Complaints");
                 });
@@ -46,13 +48,13 @@ namespace MedicineServer.Migrations
 
                     b.Property<int?>("DoctorId");
 
-                    b.Property<int?>("ExaminationId");
+                    b.Property<int?>("ProblemId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
 
-                    b.HasIndex("ExaminationId");
+                    b.HasIndex("ProblemId");
 
                     b.ToTable("Diagnoses");
                 });
@@ -125,29 +127,6 @@ namespace MedicineServer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("MedicineServer.Model.Examination", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content");
-
-                    b.Property<int?>("DoctorId");
-
-                    b.Property<int?>("PatientId");
-
-                    b.Property<DateTime>("ProblemDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("Examinations");
                 });
 
             modelBuilder.Entity("MedicineServer.Model.Medicament", b =>
@@ -227,6 +206,29 @@ namespace MedicineServer.Migrations
                     b.ToTable("PrescriptionTreatments");
                 });
 
+            modelBuilder.Entity("MedicineServer.Model.Problem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<int?>("DoctorId");
+
+                    b.Property<int?>("PatientId");
+
+                    b.Property<DateTime>("ProblemDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Problems");
+                });
+
             modelBuilder.Entity("MedicineServer.Model.Symptom", b =>
                 {
                     b.Property<int>("Id")
@@ -267,9 +269,9 @@ namespace MedicineServer.Migrations
 
             modelBuilder.Entity("MedicineServer.Model.Complaint", b =>
                 {
-                    b.HasOne("MedicineServer.Model.Examination", "Examination")
+                    b.HasOne("MedicineServer.Model.Problem", "Problem")
                         .WithMany()
-                        .HasForeignKey("ExaminationId");
+                        .HasForeignKey("ProblemId");
                 });
 
             modelBuilder.Entity("MedicineServer.Model.Diagnosis", b =>
@@ -278,9 +280,9 @@ namespace MedicineServer.Migrations
                         .WithMany()
                         .HasForeignKey("DoctorId");
 
-                    b.HasOne("MedicineServer.Model.Examination", "Examination")
+                    b.HasOne("MedicineServer.Model.Problem", "Problem")
                         .WithMany()
-                        .HasForeignKey("ExaminationId");
+                        .HasForeignKey("ProblemId");
                 });
 
             modelBuilder.Entity("MedicineServer.Model.DiagnosisDisease", b =>
@@ -305,17 +307,6 @@ namespace MedicineServer.Migrations
                         .HasForeignKey("TreatmentId");
                 });
 
-            modelBuilder.Entity("MedicineServer.Model.Examination", b =>
-                {
-                    b.HasOne("MedicineServer.Model.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId");
-
-                    b.HasOne("MedicineServer.Model.Patient", "Patient")
-                        .WithMany()
-                        .HasForeignKey("PatientId");
-                });
-
             modelBuilder.Entity("MedicineServer.Model.Prescription", b =>
                 {
                     b.HasOne("MedicineServer.Model.Diagnosis", "Diagnosis")
@@ -332,6 +323,17 @@ namespace MedicineServer.Migrations
                     b.HasOne("MedicineServer.Model.Treatment", "Treatment")
                         .WithMany()
                         .HasForeignKey("TreatmentId");
+                });
+
+            modelBuilder.Entity("MedicineServer.Model.Problem", b =>
+                {
+                    b.HasOne("MedicineServer.Model.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("MedicineServer.Model.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
                 });
 
             modelBuilder.Entity("MedicineServer.Model.Symptom", b =>
